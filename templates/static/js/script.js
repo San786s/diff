@@ -19,7 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (processBtn) {
     processBtn.addEventListener("click", async () => {
       const file = generalFileInput.files[0];
-      let language = document.getElementById("selected-option").getAttribute("data-value");
+      let selectedOptionElement = document.getElementById("selected-option");
+      let language = selectedOptionElement
+        ? selectedOptionElement.getAttribute("data-value") || "eng"
+        : "eng"; // fallback to English
 
       if (!file) {
         alert("⚠️ Please upload a file.");
@@ -54,11 +57,15 @@ document.addEventListener("DOMContentLoaded", () => {
             await worker.loadLanguage(language);
             await worker.initialize(language);
 
-            const { data: { text } } = await worker.recognize(canvas);
+            const {
+              data: { text },
+            } = await worker.recognize(canvas);
             await worker.terminate();
 
             console.log("✅ Tesseract OCR result:", text);
-            document.getElementById("output-text").value = text.trim() ? text : "No text detected.";
+            document.getElementById("output-text").value = text.trim()
+              ? text
+              : "No text detected.";
           } catch (error) {
             console.error("❌ Tesseract Error:", error);
             alert("❌ Tesseract failed. Trying EasyOCR...");
@@ -97,7 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (pdfFileInput && pdfFileNameDisplay) {
     pdfFileInput.addEventListener("change", function () {
       console.log("✅ PDF file input changed!");
-      pdfFileNameDisplay.textContent = pdfFileInput.files.length > 0 ? pdfFileInput.files[0].name : "No file chosen";
+      pdfFileNameDisplay.textContent =
+        pdfFileInput.files.length > 0 ? pdfFileInput.files[0].name : "No file chosen";
     });
   }
 
@@ -120,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ---------- OPTIONAL DOWNLOAD BUTTON ----------
+  // ---------- DOWNLOAD TEXT FILE FUNCTION ----------
   const downloadButton = document.getElementById("download-btn");
   if (downloadButton) {
     downloadButton.addEventListener("click", () => {
@@ -130,92 +138,105 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     console.error("❌ Download button NOT found.");
   }
-});
 
+  function downloadFile(fileType = "txt") {
+    const text = document.getElementById("output-text").value;
+    if (!text.trim()) {
+      alert("⚠️ No text available to download!");
+      return;
+    }
+    let filename = "extracted-text";
+    if (fileType === "txt") filename += ".txt";
+    else if (fileType === "doc" || fileType === "docx") filename += ".docx";
+    else if (fileType === "pdf") filename += ".pdf";
 
-document.querySelectorAll(".option").forEach(option => {
-  option.addEventListener("click", function () {
-    document.getElementById("selected-option").textContent = this.textContent;
-    document.getElementById("selected-option").setAttribute("data-value", this.getAttribute("data-value"));
-  });
-});
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    console.log(`✅ Downloaded file: ${filename}`);
+  }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const faqItems = document.querySelectorAll(".faq-item");
+  // ---------- DROPDOWN OPTION SELECTION ----------
+  const selectedOption = document.getElementById("selected-option");
+  const optionsBox = document.getElementById("options-box");
+  const options = document.querySelectorAll(".option");
 
-        faqItems.forEach(item => {
-            item.addEventListener("click", () => {
-                item.classList.toggle("active");
-            });
-        });
+  // Toggle dropdown visibility
+  if (selectedOption && optionsBox) {
+    selectedOption.addEventListener("click", () => {
+      optionsBox.style.display = optionsBox.style.display === "block" ? "none" : "block";
     });
-// JavaScript to handle dropdown functionality
-const selectedOption = document.getElementById('selected-option');
-const optionsBox = document.getElementById('options-box');
-const options = document.querySelectorAll('.option');
+  }
 
-// Toggle options box visibility
-selectedOption.addEventListener('click', () => {
-  optionsBox.style.display = optionsBox.style.display === 'block' ? 'none' : 'block';
-});
-
-// Handle option selection
-options.forEach(option => {
-  option.addEventListener('click', () => {
-    selectedOption.textContent = option.textContent; // Update selected option
-    optionsBox.style.display = 'none'; // Hide options box
+  // Option selection and data-value update
+  options.forEach((option) => {
+    option.addEventListener("click", () => {
+      if (selectedOption) {
+        selectedOption.textContent = option.textContent; // Update visible text
+        selectedOption.setAttribute("data-value", option.getAttribute("data-value")); // Update data-value attribute
+        optionsBox.style.display = "none";
+      }
+    });
   });
-});
 
-if (document.querySelector('.custom-dropdown')) {
-  document.addEventListener('click', (event) => {
-    const optionsBox = document.querySelector('.custom-dropdown');
-    if (!event.target.closest('.custom-dropdown')) {
-      optionsBox.style.display = 'none';
+  // Close dropdown if clicking outside
+  document.addEventListener("click", (event) => {
+    const isInsideCustomDropdown = event.target.closest(".custom-dropdown");
+    if (!isInsideCustomDropdown && optionsBox) {
+      optionsBox.style.display = "none";
     }
   });
-}
 
+  // ---------- FAQ TOGGLE ----------
+  const faqItems = document.querySelectorAll(".faq-item");
+  faqItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      item.classList.toggle("active");
+    });
+  });
 
-
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("JavaScript Loaded!"); // Debugging Step
-
+  // ---------- DARK MODE TOGGLE ----------
   const themeToggle = document.getElementById("theme-toggle");
   const modalThemeToggle = document.getElementById("modal-theme-toggle");
   const body = document.body;
 
   if (!themeToggle) {
-      console.error("Dark mode button not found!");
-      return;
-  }
+    console.error("Dark mode button not found!");
+  } else {
+    console.log("Dark mode button found:", themeToggle);
 
-  console.log("Dark mode button found:", themeToggle); // Debugging Step
-
-  // Function to toggle dark mode
-  function toggleDarkMode() {
+    function toggleDarkMode() {
       console.log("Dark mode toggled!");
       body.classList.toggle("dark-mode");
 
-      // Update button text
       const isDarkMode = body.classList.contains("dark-mode");
       themeToggle.textContent = isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
-      modalThemeToggle.textContent = isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
 
-      // Save the preference
+      if (modalThemeToggle) {
+        modalThemeToggle.textContent = isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode";
+      }
+
       localStorage.setItem("dark-mode", isDarkMode ? "enabled" : "disabled");
-  }
+    }
 
-  // Load the saved theme preference
-  if (localStorage.getItem("dark-mode") === "enabled") {
+    // Load saved preference
+    if (localStorage.getItem("dark-mode") === "enabled") {
       body.classList.add("dark-mode");
       themeToggle.textContent = "☀️ Light Mode";
-      modalThemeToggle.textContent = "☀️ Light Mode";
-  }
+      if (modalThemeToggle) {
+        modalThemeToggle.textContent = "☀️ Light Mode";
+      }
+    }
 
-  // Attach click event to both buttons
-  themeToggle.addEventListener("click", toggleDarkMode);
-  modalThemeToggle.addEventListener("click", toggleDarkMode);
+    themeToggle.addEventListener("click", toggleDarkMode);
+    if (modalThemeToggle) {
+      modalThemeToggle.addEventListener("click", toggleDarkMode);
+    }
+  }
 });
 
 
@@ -998,7 +1019,7 @@ const translations = {
 };
 document.addEventListener("DOMContentLoaded", function () {
   const savedLanguage = localStorage.getItem("selectedLanguage") || "en"; // Default to English
-  document.getElementById("language-select").value = savedLanguage; // Update dropdown
+document.getElementById("ui-language-select").value = savedLanguage; // Update dropdown
   translatePage(savedLanguage); // Apply stored language
 });
 
@@ -1150,7 +1171,7 @@ document.querySelectorAll("footer p").forEach((element) => {
   });
 }
 
-document.getElementById("language-select").addEventListener("change", function () {
+document.getElementById("ui-language-select").addEventListener("change", function () {
   const selectedLanguage = this.value;
   
   // Save selected language in localStorage

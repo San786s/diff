@@ -19,16 +19,17 @@
 
     <!-- ✅ Desktop Navigation -->
     <nav class="desktop-nav">
-      <ul>
-        <li><a href="/templates/home.html" class="translate" data-key="home">Home</a></li>
-        <li><a href="/templates/image_to_word.html" class="translate" data-key="imageToWord">IMAGE TO WORD</a></li>
-        <li><a href="/templates/image_to_excel.html" class="translate" data-key="imageToExcel">IMAGE TO EXCEL</a></li>
-        <li><a href="/templates/pdf_to_image.html" class="translate" data-key="pdfToImage">PDF TO IMAGE</a></li>       
-    </ul>
+<ul>
+  <li><a href="/" class="translate" data-key="home">Home</a></li>
+  <li><a href="/image-to-word" class="translate" data-key="imageToWord">IMAGE TO WORD</a></li>
+  <li><a href="/image-to-excel" class="translate" data-key="imageToExcel">IMAGE TO EXCEL</a></li>
+  <li><a href="/pdf-to-image" class="translate" data-key="pdfToImage">PDF TO IMAGE</a></li>
+</ul>
+
       <div class="nav-right">
           <!-- ✅ Language Selector (Moves to mobile menu on small screens) -->
-          <div class="language-select">
-              <select id="language-select">
+           <div class="language-select">
+              <select id="ui-language-select">
                   <option value="en">🇺🇸 English</option>
                   <option value="hi">🇮🇳 Hindi</option>
                   <option value="es">🇪🇸 Spanish</option>
@@ -189,11 +190,11 @@
 <div class="footer-section">
   <h3>Quick Links</h3>
   <ul>
-      <li><a href="/templates/about.html">About</a></li>
-      <li><a href="/templates/features.html">Key Features</a></li>
-      <li><a href="/templates/pricing.html">Pricing</a></li>
-      <li><a href="/templates/api_page.html">API</a></li>
-      <li><a href="/templates/faq.html">FAQ</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/features">Key Features</a></li>
+      <li><a href="/pricing">Pricing</a></li>
+      <li><a href="/api">API</a></li>
+      <li><a href="/faq">FAQ</a></li>
   </ul>
 </div>
 
@@ -201,11 +202,12 @@
 <div class="footer-section">
   <h3>Legal</h3>
   <ul>
-      <li><a href="/templates/term.html">Terms of Service</a></li>
-      <li><a href="/templates/privacy.html">Privacy Policy</a></li>
-      <li><a href="/templates/contact.html">Contact Us</a></li>
+      <li><a href="/term">Terms of Service</a></li>
+      <li><a href="/privacy">Privacy Policy</a></li>
+      <li><a href="/contact">Contact Us</a></li>
   </ul>
 </div>
+
 
 
             <!-- Social & Contact -->
@@ -223,7 +225,7 @@
 
       <!-- Back to Top -->
       <div class="footer-bottom">
-          <p>&copy; 2024 Online OCR. All rights reserved.</p>
+          <p>&copy; 2025 Online OCR. All rights reserved.</p>
           <a href="#top" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to Top</a>
       </div>
   </div>
@@ -257,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const languageSelectContainer = document.querySelector(".language-select"); // Full container div
     const mobileMenuContainer = document.querySelector(".mobile-menu-container"); // Mobile container
     const navRight = document.querySelector(".nav-right"); // Desktop container
-    const languageSelect = document.getElementById("language-select");
+    const languageSelect = document.getElementById("ui-language-select");
 
 // ✅ Function to Translate Content Based on Selected Language
 function translateContent(language) {
