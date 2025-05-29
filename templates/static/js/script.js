@@ -1,3 +1,7 @@
+import { Analytics } from "@vercel/analytics/react";
+
+<Analytics />
+
 console.log("🚀 OCR App Loaded"); // Debugging: Check if JavaScript is loaded
 
 document.addEventListener("DOMContentLoaded", () => {
