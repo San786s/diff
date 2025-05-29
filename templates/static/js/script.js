@@ -1,3 +1,7 @@
+import { Analytics } from "@vercel/analytics/react";
+
+<Analytics />
+
 console.log("🚀 OCR App Loaded"); // Debugging: Check if JavaScript is loaded
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1201,7 +1205,7 @@ formData.append("language", language);
 document.getElementById("processing-section").style.display = "block";
 
 try {
-    const response = await fetch("http://127.0.0.1:5001/extract-text", {
+    const response = await fetch("https://san786s-ocr-backend.hf.space/extract-text", {
         method: "POST",
         body: formData
     });
@@ -1263,9 +1267,9 @@ async function downloadFile(format) {
 
   let apiUrl = "";
   if (format === "docx") {
-      apiUrl = "http://127.0.0.1:5001/ocr-to-word";
+      apiUrl = "https://san786s-ocr-backend.hf.space/ocr-to-word";
   } else if (format === "xlsx") {
-      apiUrl = "http://127.0.0.1:5001/ocr-to-excel";
+      apiUrl = "https://san786s-ocr-backend.hf.space/ocr-to-excel";
   } else {
       console.error("❌ Invalid format:", format);
       alert("❌ Invalid format selected.");
@@ -1320,7 +1324,7 @@ async function convertPdfToImage() {
   document.getElementById("pdf-processing-section").style.display = "block";
 
   try {
-    const response = await fetch("http://127.0.0.1:5001/pdf-to-images", {
+    const response = await fetch("https://san786s-ocr-backend.hf.space/pdf-to-images", {
       method: "POST",
       body: formData,
     });
@@ -1400,7 +1404,7 @@ document.getElementById("uploadForm").addEventListener("submit", function(event)
   let selectedLang = document.getElementById("languageSelect").value; // Get selected language
   formData.append("language", selectedLang);
 
-  fetch("/ocr-to-word", {
+fetch("https://san786s-ocr-backend.hf.space/ocr-to-word", {
       method: "POST",
       body: formData
   }).then(response => response.json())
@@ -1431,7 +1435,7 @@ async function uploadImage() {
     formData.append("lang", "en");
 
     try {
-        let response = await fetch("http://127.0.0.1:5001/ocr-to-word", {
+        let response = await fetch("https://san786s-ocr-backend.hf.space/ocr-to-word", {
             method: "POST",
             body: formData,
         });
