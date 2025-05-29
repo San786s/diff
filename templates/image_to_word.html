@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Online OCR - Image to Text Converter</title>
-  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="/templates/static/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -269,7 +269,7 @@ async function downloadWordFile() {
         formData.append("file", file);
         formData.append("language", selectedLanguage);
 
-        let response = await fetch('/ocr-to-word', {
+        let response = await fetch("https://san786s-ocr-backend.hf.space/ocr-to-word", {
             method: 'POST',
             body: formData
         });
@@ -423,6 +423,6 @@ function translateContent(language) {
 </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.0.2/tesseract.min.js"></script>
 
-  <script src="/static/js/script.js"></script>
+  <script src="/templates/static/js/script.js"></script>
 </body>
 </html>
